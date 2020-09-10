@@ -10,4 +10,8 @@
 
 5. Benutzern emöglichen ein vergessenes Passwort über die Login-View zu ändern. Mittels eMail Versand.
 
-6. View mit dynamisch generierten Graphen des Medikamentenverbrachs einbinden.
+6. Dynamisch generierten Chart der Medikamentenanzahl einbinden:
+   --> https://asbnotebook.com/2020/04/18/google-chart-example-with-spring-boot/
+   --> https://www.roytuts.com/google-chart-using-spring/
+   --> https://www.chartjs.org/
+   [ --> https://canvasjs.com/spring-mvc-charts/ ]
