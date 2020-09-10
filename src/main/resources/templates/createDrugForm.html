@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create drug</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/styles/stylesheet.css}">
+    <div th:replace="fragments/header_user :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header_user :: header"/>
+
+<h3>Create drug</h3>
+
+<form action="#" th:action="@{/createDrug}" th:object="${drugData}" method="post">
+    <table id="noBorder">
+        <tr>
+            <td id="noBorder"><label>Drug name</label></td>
+            <td id="noBorder"><input type="text" th:field="*{name}" /></td>
+        </tr>
+        <tr>
+            <td id="noBorder"><label>Morning dose</label></td>
+            <td id="noBorder"><input type="number" step=".5" th:field="*{morningDose}" /></td>
+        </tr>
+        <tr>
+            <td id="noBorder"><label>Noon dose</label></td>
+            <td id="noBorder"><input type="number" step=".5" th:field="*{noonDose}" /></td>
+        </tr>
+        <tr>
+            <td id="noBorder"><label>Evening dose</label></td>
+            <td id="noBorder"><input type="number" step=".5" th:field="*{eveningDose}" /></td>
+        </tr>
+        <tr>
+            <td id="noBorder"><label>Original drug</label></td>
+            <td id="noBorder"><input type="checkbox" th:field="*{originalDrug}" /></td>
+        </tr>
+        <tr>
+            <td id="noBorder"><label>Default package size</label></td>
+            <td id="noBorder"><input type="number" th:field="*{defaultPackageSize}" /></td>
+        </tr>
+        <tr>
+            <td id="noBorder"><label>Count</label></td>
+            <td id="noBorder"><input type="number" th:field="*{count}" /></td>
+        </tr>
+        <tr>
+            <td id="noBorder"><label>Comment</label></td>
+            <td id="noBorder"><input type="text" th:field="*{comment}" /></td>
+        </tr>
+    </table>
+    <input id="marginTop" type="submit" value="Create drug" />
+    <input id="marginTop" class="button" type="button" onclick="window.location.replace('showDrugs')" value="Cancel" />
+</form>
+</body>
+</html>

@@ -1,0 +1,33 @@
+body { font: normal .9em/100% Arial, serif; }
+
+table, th, td { border: 1px solid; }
+
+#noBorder { border: none; }
+
+#coll {
+  border-collapse: collapse;
+}
+
+#infoText {color: #c23232}
+
+caption { text-align: left; }
+
+th, td {
+  padding: .2em .5em;
+  border-radius: .1em;
+}
+
+thead th {
+  background-color: #d2d7fc;
+  color: #192154;
+}
+
+#align_center { text-align: center; }
+#align_left { text-align: left; }
+
+#marginTop { margin-top:    20px; }
+
+p {
+   font-family: "Arial", Arial, serif;
+   style= "line-height: 150%"
+}

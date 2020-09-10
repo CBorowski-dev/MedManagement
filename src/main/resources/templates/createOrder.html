@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create order</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/styles/stylesheet.css}">
+    <div th:replace="fragments/header_user :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header_user :: header"/>
+
+<h3>Create order</h3>
+
+<table id="coll">
+    <thead>
+    <tr>
+        <th>Drug</th>
+        <th>Dose (mor)</th>
+        <th>Dose (noon)</th>
+        <th>Dose (eve)</th>
+        <th>Count</th>
+        <th>Days off</th>
+        <th>Days left</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${drugs.empty}">
+        <td colspan="2"> No Drugs Available </td>
+    </tr>
+    <tr id="align_center" th:each="drug : ${drugs}">
+        <td id="align_left" style="font-weight:bold"><span th:text="${drug.name}">Drug</span></td>
+        <td><span th:text="${drug.morningDose}">Dose (mor)</span></td>
+        <td><span th:text="${drug.noonDose}">Dose (noon)</span></td>
+        <td><span th:text="${drug.eveningDose}">Dose (eve)</span></td>
+        <td><span th:text="${drug.currentDrugCount}">Count</span></td>
+        <td><span th:text="${drug.daysOff}">Days off</span></td>
+        <td><span th:text="${drug.daysLeft}">Days left</span></td>
+        <td>
+            <form action="#" th:action="@{/createOrderItem(id=${drug.id})}" th:object="${drug}" method="post">
+                <input type="image" src="shopping-cart.png" width="17" height="17"/>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h4>Order</h4>
+
+<table id="coll">
+    <thead>
+    <tr>
+        <th>Drug</th>
+        <th>Original</th>
+        <th>Number of packs</th>
+        <th>Pack size</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${orderItems.empty}">
+        <td colspan="5"> No order items available </td>
+    </tr>
+    <tr id="align_center" th:each="orderItem : ${orderItems}">
+        <td id="align_left" style="font-weight:bold"><span th:text="${orderItem.drugName}">Drug</span></td>
+        <td><span th:text="${orderItem.originalDrug}">Original</span></td>
+        <td><span th:text="${orderItem.numberOfPacks}">Number of packs</span></td>
+        <td><span th:text="${orderItem.packSize}">Pack size</span></td>
+        <td>
+            <form action="#" th:action="@{/deleteFromOrder(id=${orderItem.drugId})}" th:object="${drug}" method="post">
+                <input type="image" src="delete.png" width="17" height="17" onClick="return confirm('Sure?')"/>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<input id="marginTop" class="button" type="button" onclick="window.location.replace('clearOrder')" value="Clear order" />
+<a th:href="@{/generateOrder}" id="marginTop" target="_blank" style="text-decoration:none"><button>Generate order</button></a>
+
+</body>
+</html>

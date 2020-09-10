@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Bestellung</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/styles/stylesheet.css}">
+</head>
+<body>
+
+<h3>Bestellung</h3>
+
+<p style="line-height: 150%">Christoph Borowski<br>
+Im Vogtland 107<br>
+33104 Paderborn<br>
+Tel.: 05252 8399524</p>
+
+<br><p style="line-height: 150%"><b>Generika:</b></p>
+<table id="coll">
+    <thead>
+    <tr>
+        <th>Medikament</th>
+        <th>Anzahl Päckchen</th>
+        <th>Packungsgröße</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${orderItemsGeneric.empty}">
+        <td colspan="3"> Keine Medikamente </td>
+    </tr>
+    <tr id="align_center" th:each="orderItem : ${orderItemsGeneric}">
+        <td id="align_left" style="font-weight:bold"><span th:text="${orderItem.drugName}">Medikament</span></td>
+        <td><span th:text="${orderItem.numberOfPacks}">Anzahl Päckchen</span></td>
+        <td><span th:text="${orderItem.packSize}">Packungsgröße</span></td>
+    </tr>
+    </tbody>
+</table>
+
+<br><p style="line-height: 150%"><b>Originale / Reimporte:</b></p>
+<table id="coll">
+    <thead>
+    <tr>
+        <th>Medikament</th>
+        <th>Anzahl Päckchen</th>
+        <th>Packungsgröße</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${orderItemsOriginal.empty}">
+        <td colspan="3"> Keine Medikamente </td>
+    </tr>
+    <tr id="align_center" th:each="orderItem : ${orderItemsOriginal}">
+        <td id="align_left" style="font-weight:bold"><span th:text="${orderItem.drugName}">Medikament</span></td>
+        <td><span th:text="${orderItem.numberOfPacks}">Anzahl Päckchen</span></td>
+        <td><span th:text="${orderItem.packSize}">Packungsgröße</span></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

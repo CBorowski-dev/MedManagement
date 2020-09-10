@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Med Management Login</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <link rel="stylesheet" th:href="@{/styles/stylesheet.css}">
+        <!--div th:replace="fragments/header :: header-css"/-->
+    </head>
+
+    <body>
+
+        <!--div th:replace="fragments/header :: header"/-->
+
+        <h3>Login</h3>
+
+        <div th:if="${param.error}" id="infoText">
+            Invalid username and password.<br><br>
+        </div>
+        <div th:if="${param.logout}" id="infoText">
+            You have been logged out.<br><br>
+        </div>
+
+        <form th:action="@{/login}" method="post">
+            <table id="noBorder">
+                <tr>
+                    <td id="noBorder"><label>User Name </label></td>
+                    <td id="noBorder"><input type="text" name="username" /></td>
+                </tr>
+                <tr>
+                    <td id="noBorder"><label>Password</label></td>
+                    <td id="noBorder"><input type="password" name="password" /></td>
+                </tr>
+            </table>
+            <input id="marginTop" type="submit" value="Login" />
+        </form>
+
+    </body>
+</html>

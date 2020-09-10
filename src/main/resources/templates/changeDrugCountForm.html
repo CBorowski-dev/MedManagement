@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>List all drugs</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/styles/stylesheet.css}">
+    <div th:replace="fragments/header_user :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header_user :: header"/>
+
+<h3>Change drug count</h3>
+
+<form action="#" th:action="@{/changeDrugCountForm}" th:object="${changeDrugCountData}" method="post">
+    <table id="noBorder">
+        <tr>
+            <td id="noBorder"><label>Drug name</label></td>
+            <td id="noBorder" style="font-weight:bold"><span th:text="*{name}"/></td>
+        </tr>
+        <tr>
+            <td id="noBorder"><label>Current count</label></td>
+            <td id="noBorder" style="font-weight:bold"><span th:text="*{currentDrugCount}" /></td>
+        </tr>
+        <tr>
+            <td id="noBorder"><label>Additional drug count</label></td>
+            <td id="noBorder"><input type="number" th:field="*{count}" /></td>
+        </tr>
+        <tr>
+            <td id="noBorder"><label>Comment</label></td>
+            <td id="noBorder"><input type="text" th:field="*{comment}" /></td>
+        </tr>
+    </table>
+    <input type="hidden" th:value="${changeDrugCountData.id}" name="id" />
+    <input id="marginTop" type="submit" value="Increase/Decrease drug count" />
+    <input id="marginTop" class="button" type="button" onclick="window.location.replace('showDrugs')" value="Cancel" />
+</form>
+</body>
+</html>

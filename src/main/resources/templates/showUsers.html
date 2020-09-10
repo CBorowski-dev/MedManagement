@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Show users</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/styles/stylesheet.css}">
+    <div th:replace="fragments/header_admin :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header_admin :: header"/>
+
+<h3>All users</h3>
+
+<table id="coll">
+    <thead>
+    <tr>
+        <th>User name</th>
+        <th>Account expired</th>
+        <th>Account locked</th>
+        <th>Cred. expired</th>
+        <th>Disabled</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${users.empty}">
+        <td colspan="7"> No Users Available </td>
+    </tr>
+    <tr id="align_center" th:each="user : ${users}">
+        <td id="align_left" style="font-weight:bold"><span th:text="${user.name}">User name</span></td>
+        <td><span th:text="${user.accountExpired}">Account expired</span></td>
+        <td><span th:text="${user.accountLocked}">Account locked</span></td>
+        <td><span th:text="${user.credentialsExpired}">Cred. expired</span></td>
+        <td><span th:text="${user.disabled}">Disabled</span></td>
+        <td>
+            <form action="#" th:action="@{/editUser(id=${user.id})}" th:object="${user}" method="post">
+                <input type="image" src="edit-button.png" width="17" height="17"/>
+            </form>
+        </td>
+        <td>
+            <form action="#" th:action="@{/deleteUser(id=${user.id})}" th:object="${user}" method="post">
+                <input type="image" src="delete.png" width="17" height="17" onClick="return confirm('Sure?')"/>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

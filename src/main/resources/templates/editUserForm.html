@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit user</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/styles/stylesheet.css}">
+    <div th:replace="fragments/header_admin :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header_admin :: header"/>
+
+<h3>Edit user</h3>
+
+<form action="#" th:action="@{/editUserForm}" th:object="${userDTO}" method="post">
+    <table id="noBorder">
+        <tr>
+            <td id="noBorder"><label>First name</label></td>
+            <td id="noBorder"><input type="text" th:field="*{firstname}" /></td>
+        </tr>
+        <tr>
+            <td id="noBorder"><label>Last name</label></td>
+            <td id="noBorder"><input type="text" th:field="*{lastname}" /></td>
+        </tr>
+        <tr>
+            <td id="noBorder"><label>Email</label></td>
+            <td id="noBorder"><input type="text" th:field="*{email}" /></td>
+        </tr>
+        <tr>
+            <td id="noBorder"><label>Username</label></td>
+            <td id="noBorder"><input type="text" th:field="*{name}" /></td>
+        </tr>
+        <tr>
+            <td id="noBorder"><label>Password</label></td>
+            <td id="noBorder"><input type="text" th:field="*{password}" /></td>
+        </tr>
+        <tr>
+            <td id="noBorder"><label>Disabled</label></td>
+            <td id="noBorder"><input type="checkbox" th:field="*{disabled}" /></td>
+        </tr>
+        <tr>
+            <td id="noBorder"><label>Account expired</label></td>
+            <td id="noBorder"><input type="checkbox" th:field="*{accountExpired}" /></td>
+        </tr>
+        <tr>
+            <td id="noBorder"><label>Account locked</label></td>
+            <td id="noBorder"><input type="checkbox" th:field="*{accountLocked}" /></td>
+        </tr>
+        <tr>
+            <td id="noBorder"><label>Credentials expired</label></td>
+            <td id="noBorder"><input type="checkbox" th:field="*{credentialsExpired}" /></td>
+        </tr>
+        <tr>
+            <td id="noBorder"><label>Role</label></td>
+            <td id="noBorder">
+                <!--select th:object="${roles}"-->
+                <select th:field="*{rolename}">
+                    <option th:each="role : ${roles}"
+                            th:value="${role.roleName}"
+                            th:text="${role.roleName}"></option>
+                </select>
+            </td>
+        </tr>
+    </table>
+    <input type="hidden" th:value="${userDTO.id}" name="id" />
+    <input id="marginTop" type="submit" value="Save user" />
+    <input id="marginTop" class="button" type="button" onclick="window.location.replace('showUsers')" value="Cancel" />
+</form>
+</body>
+</html>

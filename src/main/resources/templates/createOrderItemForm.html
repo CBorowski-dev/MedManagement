@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create order item</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/styles/stylesheet.css}">
+    <div th:replace="fragments/header_user :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header_user :: header"/>
+
+<h3>Create order item</h3>
+
+<form action="#" th:action="@{/addToOrder(id=${orderItem.drugId})}" th:object="${orderItem}" method="post">
+    <table id="noBorder">
+        <tr>
+            <td id="noBorder"><label>Drug name</label></td>
+            <!--td id="noBorder" style="font-weight:bold"><span th:text="${orderItem.drugName}"/></td-->
+            <td id="noBorder" style="font-weight:bold"><input type="text" th:field="${orderItem.drugName}" readonly/></td>
+        </tr>
+        <tr>
+            <td id="noBorder"><label>Current count</label></td>
+            <!--td id="noBorder" style="font-weight:bold"><span th:text="${orderItem.currentDrugCount}"/></td-->
+            <td id="noBorder" style="font-weight:bold"><input type="number" th:field="${orderItem.currentDrugCount}" readonly/></td>
+        </tr>
+        <tr>
+            <td id="noBorder"><label>Original drug</label></td>
+            <td id="noBorder"><input type="checkbox" th:field="*{originalDrug}" /></td>
+        </tr>
+        <tr>
+            <td id="noBorder"><label>Number of packs</label></td>
+            <td id="noBorder"><input type="number" th:field="*{numberOfPacks}" /></td>
+        </tr>
+        <tr>
+            <td id="noBorder"><label>Pack size</label></td>
+            <td id="noBorder"><input type="number" th:field="*{packSize}" /></td>
+        </tr>
+    </table>
+    <input id="marginTop" type="submit" value="Add to order" />
+    <input id="marginTop" class="button" type="button" onclick="window.location.replace('createOrder')" value="Cancel" />
+</form>
+</body>
+</html>

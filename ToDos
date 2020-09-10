@@ -1,0 +1,13 @@
+1. Wieso ist die Verknüpung zwischen Drugs und Users über den user_name.
+   Siehe DB: select * from drugs;
+   --> auf userId ändern
+
+2. Benutzern ermöglichen die eigenen Benutzerdaten einzusehen und zu ändern.
+
+3. Benutzern ermöglichen das Passwort zu ändern.
+
+4. Admin ermöglichen Passwörter von Benutzern zu ändern.
+
+5. Benutzern emöglichen ein vergessenes Passwort über die Login-View zu ändern. Mittels eMail Versand.
+
+6. View mit dynamisch generierten Graphen des Medikamentenverbrachs einbinden.

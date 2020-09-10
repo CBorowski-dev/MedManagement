@@ -1,0 +1,25 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:fragment="header-css">
+        <!-- this is header-css -->
+        <link rel="stylesheet" th:href="@{/styles/stylesheet.css}">
+    </div>
+</head>
+<body>
+<div th:fragment="header">
+    <h2>MedManagement</h2>
+
+    <form id="form1" th:action="@{/showDrugs}" method="get"></form>
+    <form id="form2" th:action="@{/createDrug}" method="get"></form>
+    <form id="form3" th:action="@{/createOrder}" method="get"></form>
+    <form id="form4" th:action="@{/logout}" method="post"></form>
+
+    <button form="form1" type="submit">Show drugs</button>
+    <button form="form2" type="submit">Create drug</button>
+    <button form="form3" type="submit">Create order</button>
+    <button form="form4" type="submit">Logout</button>
+
+</div>
+
+</body>
+</html>

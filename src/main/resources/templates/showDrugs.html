@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Show drugs</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/styles/stylesheet.css}">
+    <div th:replace="fragments/header_user :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header_user :: header"/>
+
+<h3>All drugs</h3>
+
+<table id="coll">
+    <thead>
+    <tr>
+        <th>Drug</th>
+        <th>Dose (mor)</th>
+        <th>Dose (noon)</th>
+        <th>Dose (eve)</th>
+        <th>Count</th>
+        <th>Days off</th>
+        <th>Days left</th>
+        <th></th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${drugs.empty}">
+        <td colspan="10"> No Drugs Available </td>
+    </tr>
+    <tr id="align_center" th:each="drug : ${drugs}">
+        <td id="align_left" style="font-weight:bold"><span th:text="${drug.name}">Drug</span></td>
+        <td><span th:text="${drug.morningDose}">Dose (mor)</span></td>
+        <td><span th:text="${drug.noonDose}">Dose (noon)</span></td>
+        <td><span th:text="${drug.eveningDose}">Dose (eve)</span></td>
+        <td><span th:text="${drug.currentDrugCount}">Count</span></td>
+        <td><span th:text="${drug.daysOff}">Days off</span></td>
+        <td><span th:text="${drug.daysLeft}">Days left</span></td>
+        <td>
+            <form action="#" th:action="@{/editDrug(id=${drug.id})}" th:object="${drug}" method="post">
+                <input type="image" src="edit-button.png" width="17" height="17"/>
+            </form>
+        </td>
+        <td>
+            <form action="#" th:action="@{/changeDrugCount(id=${drug.id})}" th:object="${drug}" method="post">
+                <input type="image" src="add.png" width="17" height="17"/>
+            </form>
+        </td>
+        <td>
+            <form action="#" th:action="@{/deleteDrug(id=${drug.id})}" th:object="${drug}" method="post">
+                <input type="image" src="delete.png" width="17" height="17" onClick="return confirm('Sure?')"/>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
