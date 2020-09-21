@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Show drugs</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" th:href="@{/styles/stylesheet.css}">
     <div th:replace="fragments/header_user :: header-css"/>
@@ -57,6 +58,35 @@
     </tr>
     </tbody>
 </table>
-
+<div>
+<canvas id="myChart" width="200" height="50"></canvas>
+<script type="text/javascript" th:inline="javascript">
+/*<![CDATA[*/
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'horizontalBar',
+    data: {
+        labels: /*[[ ${label} ]]*/,
+        datasets: [{
+            label: "Days left",
+            borderColor: /*[[ ${color} ]]*/,
+            data: /*[[ ${point} ]]*/,
+            backgroundColor: /*[[ ${color} ]]*/,
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+/*]]>*/
+</script>
+</div>
 </body>
 </html>

@@ -14,6 +14,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +34,12 @@ public class MainController implements WebMvcConfigurer {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    private final String GREEN = "rgb(34,139,34)";
+    private final String ORANGE = "rgb(255,140,0)";
+    private final String RED = "rgb(255,0,0)";
+
+    private final int GREEN_MIN = 15;
+    private final int ORANGE_MIN = 8;
 
     // Shows the application name when the URL ends with /medmanagement
     public String index() {
@@ -117,7 +124,33 @@ public class MainController implements WebMvcConfigurer {
     public String showDrugs(Model model) {
 
         // ToDo... Entities nicht an das View weitergeben
-        model.addAttribute("drugs", userDataService.getDrugs(getUserName()));
+        ArrayList<Drug> drugs = userDataService.getDrugs(getUserName());
+        model.addAttribute("drugs", drugs);
+
+        //horizontal axis
+        String label[] = new String[drugs.size()];
+
+        //The vertical axis
+        int point[] = new int[drugs.size()];
+
+        // color
+        String color[] = new String[drugs.size()];
+
+        for (int i=0; i<drugs.size(); i++) {
+            label[i] = drugs.get(i).getName();
+            point[i] = drugs.get(i).getDaysLeft();
+            color[i] = GREEN;
+            if (point[i] < ORANGE_MIN) {
+                color[i] = RED;
+            } else if (point[i] < GREEN_MIN) {
+                color[i] = ORANGE;
+            }
+        }
+
+        //and stores it in the model
+        model.addAttribute("label",label);
+        model.addAttribute("point",point);
+        model.addAttribute("color", color);
 
         return "showDrugs";
     }
