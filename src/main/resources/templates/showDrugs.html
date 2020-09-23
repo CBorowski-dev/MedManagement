@@ -58,8 +58,9 @@
     </tr>
     </tbody>
 </table>
-<div>
-<canvas id="myChart" width="200" height="50"></canvas>
+<div class="chart-container">
+    <canvas id="myChart"></canvas>
+</div>
 <script type="text/javascript" th:inline="javascript">
 /*<![CDATA[*/
 var ctx = document.getElementById('myChart').getContext('2d');
@@ -82,11 +83,12 @@ var myChart = new Chart(ctx, {
                     beginAtZero: true
                 }
             }]
-        }
+        },
+        responsive:true,
+        maintainAspectRatio: true
     }
 });
 /*]]>*/
 </script>
-</div>
 </body>
 </html>
