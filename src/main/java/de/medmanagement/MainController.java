@@ -2,6 +2,7 @@ package de.medmanagement;
 
 import de.medmanagement.model.*;
 import de.medmanagement.rights.*;
+import org.apache.catalina.filters.RemoteIpFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -69,7 +70,7 @@ public class MainController implements WebMvcConfigurer {
 
     /**
      *
-     * @return
+     * @return Username of the current user.
      */
     private String getUserName() {
         UserDetails userDetails = getUserDetails();
@@ -440,7 +441,7 @@ public class MainController implements WebMvcConfigurer {
     }
 
     /**
-     *
+     * sdlfksldfkjsldf
      * @param model
      * @return
      */
@@ -451,6 +452,73 @@ public class MainController implements WebMvcConfigurer {
         model.addAttribute("orderItemsOriginal", userDataService.getOrderItems(true, getUserName()));
 
         return "showOrder";
+    }
+
+    /**
+     *
+     * @param model
+     * @return
+     */
+    @GetMapping(path="/changePassword")
+    public String changePassword(Model model) {
+
+        model.addAttribute("passwordDTO", new PasswordDTO());
+
+        return "changePasswordForm";
+    }
+
+    /**
+     *
+     * @param passwordDTO
+     * @return
+     */
+    @PostMapping(path="/changePasswordSubmit")
+    public RedirectView changePasswordSubmit(@ModelAttribute("passwordDTO") PasswordDTO passwordDTO) {
+        String newPassword = passwordDTO.getNewPassword();
+        String newPasswordConfirmation = passwordDTO.getNewPasswordConfirmation();
+
+        if (newPassword != null && !newPassword.trim().equals("")
+            && newPasswordConfirmation != null && !newPasswordConfirmation.trim().equals("")
+            && newPassword.equals(newPasswordConfirmation)) {
+
+            Optional<User> optionalUser = usersRepository.findByName(getUserName());
+            if(optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                user.setPassword(passwordEncoder.encode(newPassword));
+                usersRepository.save(user);
+            }
+            return new RedirectView("passwordChangeSucceeded");
+        } else {
+            // password and password conformation are not equal or one or both are null
+            return new RedirectView("passwordChangeFailed");
+        }
+    }
+
+    /**
+     *
+     * @param model
+     * @return
+     */
+    @GetMapping(path="/passwordChangeSucceeded")
+    public String passwordChangeSucceeded(Model model) {
+
+        model.addAttribute("message", "Password has been changed succesfully.");
+
+        return "passwordChangeMessage";
+    }
+
+    /**
+     *
+     * @param model
+     * @return
+     */
+    @GetMapping(path="/passwordChangeFailed")
+    public String passwordChangeFailed(Model model) {
+
+        model.addAttribute("message", "Password could not be changed. Either the two passwords entered differ or were empty.\n" +
+                "Please try again.");
+
+        return "passwordChangeMessage";
     }
 
 } // MainController
