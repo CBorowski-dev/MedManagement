@@ -11,11 +11,13 @@
 
     <form id="form1" th:action="@{/showUsers}" method="get"></form>
     <form id="form2" th:action="@{/createUser}" method="get"></form>
-    <form id="form3" th:action="@{/logout}" method="post"></form>
+    <form id="form3" th:action="@{/changePassword}" method="get"></form>
+    <form id="form4" th:action="@{/logout}" method="post"></form>
 
     <button form="form1" type="submit">Show users</button>
     <button form="form2" type="submit">Create user</button>
-    <button form="form3" type="submit">Logout</button>
+    <button form="form3" type="submit">Change password</button>
+    <button form="form4" type="submit">Logout</button>
 
 </div>
 

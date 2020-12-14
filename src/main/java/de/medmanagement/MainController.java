@@ -473,7 +473,7 @@ public class MainController implements WebMvcConfigurer {
      * @return
      */
     @PostMapping(path="/changePasswordSubmit")
-    public RedirectView changePasswordSubmit(@ModelAttribute("passwordDTO") PasswordDTO passwordDTO) {
+    public String changePasswordSubmit(@ModelAttribute("passwordDTO") PasswordDTO passwordDTO) {
         String newPassword = passwordDTO.getNewPassword();
         String newPasswordConfirmation = passwordDTO.getNewPasswordConfirmation();
 
@@ -487,38 +487,12 @@ public class MainController implements WebMvcConfigurer {
                 user.setPassword(passwordEncoder.encode(newPassword));
                 usersRepository.save(user);
             }
-            return new RedirectView("passwordChangeSucceeded");
+            // return new RedirectView("passwordChangeSucceeded");
+            return "passwordChangeSucceeded";
         } else {
             // password and password conformation are not equal or one or both are null
-            return new RedirectView("passwordChangeFailed");
+            // return new RedirectView("passwordChangeFailed");
+            return "passwordChangeFailed";
         }
     }
-
-    /**
-     *
-     * @param model
-     * @return
-     */
-    @GetMapping(path="/passwordChangeSucceeded")
-    public String passwordChangeSucceeded(Model model) {
-
-        model.addAttribute("message", "Password has been changed succesfully.");
-
-        return "passwordChangeMessage";
-    }
-
-    /**
-     *
-     * @param model
-     * @return
-     */
-    @GetMapping(path="/passwordChangeFailed")
-    public String passwordChangeFailed(Model model) {
-
-        model.addAttribute("message", "Password could not be changed. Either the two passwords entered differ or were empty.\n" +
-                "Please try again.");
-
-        return "passwordChangeMessage";
-    }
-
 } // MainController
