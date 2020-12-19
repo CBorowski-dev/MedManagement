@@ -1,8 +1,5 @@
 package de.medmanagement.rights;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,6 +19,8 @@ public class User implements Serializable {
     private String email;
     private String name;
     private String password;
+    private String address;
+    private String phoneNumber;
     private boolean disabled;
     private boolean accountExpired;
     private boolean accountLocked;
@@ -35,12 +34,14 @@ public class User implements Serializable {
 
     public User() {}
 
-    public User(String firstname, String lastname, String email, String name, String password, boolean disabled, boolean accountExpired, boolean accountLocked, boolean credentialsExpired) {
+    public User(String firstname, String lastname, String email, String name, String password, String address, String phoneNumber, boolean disabled, boolean accountExpired, boolean accountLocked, boolean credentialsExpired) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.name = name;
         this.password = password;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
         this.disabled = disabled;
         this.accountExpired = accountExpired;
         this.accountLocked = accountLocked;
@@ -93,6 +94,22 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public boolean isDisabled() {

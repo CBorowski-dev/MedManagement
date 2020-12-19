@@ -13,6 +13,8 @@ public class UserDTO {
     public String email;
     public String name;
     public String password;
+    public String address;
+    public String phoneNumber;
     public boolean disabled;
     public boolean accountExpired;
     public boolean accountLocked;
@@ -28,6 +30,8 @@ public class UserDTO {
         email = user.getEmail();
         name = user.getName();
         password = user.getPassword();
+        address = user.getAddress();
+        phoneNumber = user.getPhoneNumber();
         disabled = user.isDisabled();
         accountExpired = user.isAccountExpired();
         accountLocked = user.isAccountLocked();

@@ -196,6 +196,8 @@ public class MainController implements WebMvcConfigurer {
                 userDTO.email,
                 userDTO.name,
                 passwordEncoder.encode(userDTO.password),
+                userDTO.address,
+                userDTO.phoneNumber,
                 userDTO.disabled,
                 userDTO.accountExpired,
                 userDTO.accountLocked,
@@ -245,6 +247,8 @@ public class MainController implements WebMvcConfigurer {
             user.setLastname(userDTO.lastname);
             user.setEmail(userDTO.email);
             user.setName(userDTO.name);
+            user.setAddress(userDTO.address);
+            user.setPhoneNumber(userDTO.phoneNumber);
             user.setDisabled(userDTO.disabled);
             user.setAccountExpired(userDTO.accountExpired);
             user.setAccountLocked(userDTO.accountLocked);
@@ -448,6 +452,17 @@ public class MainController implements WebMvcConfigurer {
     @GetMapping(path="/generateOrder")
     public String generateOrder(Model model) {
 
+        Optional<User> optionalUser = usersRepository.findByName(getUserName());
+        if(optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            model.addAttribute("firstname", user.getFirstname());
+            model.addAttribute("lastname", user.getLastname());
+            model.addAttribute("phoneNumber", user.getPhoneNumber());
+            String address = user.getAddress();
+            String[] a = address.split("\n");
+            model.addAttribute("street", a[0]);
+            model.addAttribute("city", a[1]);
+        }
         model.addAttribute("orderItemsGeneric", userDataService.getOrderItems(false, getUserName()));
         model.addAttribute("orderItemsOriginal", userDataService.getOrderItems(true, getUserName()));
 
