@@ -1,8 +1,6 @@
 package de.medmanagement.model;
 
 import com.sun.istack.NotNull;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,7 +8,7 @@ import java.util.Date;
 
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "drug_history_entities")
-public class DrugHistoryEntry implements Serializable {
+public class DrugHistoryEntry implements Comparable, Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -28,7 +26,7 @@ public class DrugHistoryEntry implements Serializable {
 
     public DrugHistoryEntry(int count, Date creationDate, String comment) {
         this.count = count;
-        this.creationDate = creationDate;
+        this.creationDate = Utils.normilizeDate(creationDate);
         this.comment = comment;
     }
 
@@ -64,4 +62,14 @@ public class DrugHistoryEntry implements Serializable {
         this.comment = comment;
     }
 
+    @Override
+    public int compareTo(Object o) {
+        if (this.creationDate.before(getCreationDate())) {
+            return -1;
+        } else if (this.creationDate.after(getCreationDate())) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }
