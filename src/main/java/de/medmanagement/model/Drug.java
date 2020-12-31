@@ -1,6 +1,7 @@
 package de.medmanagement.model;
 
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.SortNatural;
 
 import javax.persistence.*;
 
@@ -23,12 +24,6 @@ public class Drug {
     @Column(unique = true)
     private String name;
     @NotNull
-    private float morningDose;
-    @NotNull
-    private float noonDose;
-    @NotNull
-    private float eveningDose;
-    @NotNull
     private boolean isOriginalDrug = false;
     @NotNull
     private int defaultPackageSize;
@@ -37,7 +32,15 @@ public class Drug {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "drug_id")
-    private Set<DrugHistoryEntry> drugHistoryEntries = new HashSet<DrugHistoryEntry>();
+    @SortNatural
+    @OrderBy("creationDate DESC")
+    private List<DrugHistoryEntry> drugHistoryEntries = new ArrayList<DrugHistoryEntry>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "drug_id")
+    @SortNatural
+    @OrderBy("creationDate DESC")
+    private List<DrugDoseHistoryEntry> drugDoseHistoryEntries = new ArrayList<DrugDoseHistoryEntry>();
 
     // Default constructor is needed for Hibernate
     public Drug() {}
@@ -55,14 +58,55 @@ public class Drug {
      */
     public Drug(String name, int count, Date creationDate, float morningDose, float noonDose, float eveningDose, boolean isOriginalDrug, int defaultPackageSize, String comment, String userName) {
         this.name = name;
-        this.morningDose = morningDose;
-        this.noonDose = noonDose;
-        this.eveningDose = eveningDose;
         this.isOriginalDrug = isOriginalDrug;
         this.defaultPackageSize = defaultPackageSize;
         this.userName = userName;
 
         drugHistoryEntries.add(new DrugHistoryEntry(count, creationDate, comment));
+        drugDoseHistoryEntries.add(new DrugDoseHistoryEntry(morningDose, noonDose, eveningDose, creationDate, "Initial dose"));
+    }
+
+    /**
+     *
+     * @return
+     */
+    private DrugDoseHistoryEntry getLatestDrugDoseHistoryEntry() {
+        return drugDoseHistoryEntries.get(0);
+    }
+
+    /**
+     *
+     * @return
+     */
+    private int getConsumedDrugCount() {
+        int consumedDrugCount = 0;
+        DrugDoseHistoryEntry entryOld = null;
+        // Initialization of entryNew is necessary for the case when there is only one
+        // drug dose entry for the current drug. Then the for loop is not performed and
+        // therefore the initialization for the entryNew as well.
+        DrugDoseHistoryEntry entryNew = drugDoseHistoryEntries.get(0);
+
+        for (int i = drugDoseHistoryEntries.size()-1; i>0; i--) {
+            entryOld = drugDoseHistoryEntries.get(i);
+            entryNew = drugDoseHistoryEntries.get(i-1);
+            consumedDrugCount += calculateDrugConsumption(entryOld, entryOld.getCreationDate(), entryNew.getCreationDate());
+        }
+        consumedDrugCount += calculateDrugConsumption(entryNew, entryNew.getCreationDate(), new Date());
+
+        return consumedDrugCount;
+    }
+
+    /**
+     *
+     * @param entry
+     * @param oldDate
+     * @param newDate
+     * @return
+     */
+    private int calculateDrugConsumption(DrugDoseHistoryEntry entry, Date oldDate, Date newDate) {
+        Duration duration = Duration.ofMillis(newDate.getTime() - oldDate.getTime());
+        int dayCount = (int) duration.getSeconds()/60/60/24;
+        return (int) (dayCount * (entry.getMorningDose() + entry.getEveningDose() + entry.getNoonDose()));
     }
 
     public Integer getId() {
@@ -82,27 +126,27 @@ public class Drug {
     }
 
     public float getMorningDose() {
-        return morningDose;
+        return getLatestDrugDoseHistoryEntry().getMorningDose();
     }
 
     public void setMorningDose(float morningDose) {
-        this.morningDose = morningDose;
+        getLatestDrugDoseHistoryEntry().setMorningDose(morningDose);
     }
 
     public float getNoonDose() {
-        return noonDose;
+        return getLatestDrugDoseHistoryEntry().getNoonDose();
     }
 
     public void setNoonDose(float noonDose) {
-        this.noonDose = noonDose;
+        getLatestDrugDoseHistoryEntry().setNoonDose(noonDose);
     }
 
     public float getEveningDose() {
-        return eveningDose;
+        return getLatestDrugDoseHistoryEntry().getEveningDose();
     }
 
     public void setEveningDose(float eveningDose) {
-        this.eveningDose = eveningDose;
+        getLatestDrugDoseHistoryEntry().setEveningDose(eveningDose);
     }
 
     public boolean isOriginalDrug() {
@@ -146,8 +190,9 @@ public class Drug {
      * @return day count
      */
     public int getDaysLeft() {
-        float countPerDay = morningDose + noonDose + eveningDose;
-        return (int) Math.floor(getTotalDrugCount() / countPerDay) - getDaysOff();
+        DrugDoseHistoryEntry entryNew = drugDoseHistoryEntries.get(0);
+        float countPerDay = entryNew.getMorningDose() + entryNew.getNoonDose() + entryNew.getEveningDose();
+        return (int) Math.floor((getTotalDrugCount() - getConsumedDrugCount()) / countPerDay);
     }
 
     /**
@@ -167,8 +212,7 @@ public class Drug {
      * @return
      */
     public float getCurrentDrugCount() {
-        float countPerDay = morningDose + noonDose + eveningDose;
-        return getTotalDrugCount() - ( getDaysOff() * countPerDay );
+        return getTotalDrugCount() - getConsumedDrugCount();
     }
 
     /**
@@ -176,13 +220,7 @@ public class Drug {
      * @return date of the oldest history entry
      */
     private Date getOldestCountUpdate() {
-        Date oldestUpdate = null;
-        for (DrugHistoryEntry entry : drugHistoryEntries) {
-            if (oldestUpdate == null || oldestUpdate.after(entry.getCreationDate())) {
-                oldestUpdate = entry.getCreationDate();
-            }
-        }
-        return oldestUpdate;
+        return drugHistoryEntries.get(drugHistoryEntries.size()-1).getCreationDate();
     }
 
     @Override
@@ -191,30 +229,6 @@ public class Drug {
         if (o == null || getClass() != o.getClass()) return false;
         Drug drug = (Drug) o;
         return name.equals(drug.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, morningDose, noonDose, eveningDose);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder x = new StringBuilder();
-
-        x.append(name);
-        x.append(' ');
-        x.append(morningDose);
-        x.append('|');
-        x.append(noonDose);
-        x.append('|');
-        x.append(eveningDose);
-        x.append(" : ");
-        x.append(getDaysOff());
-        x.append(" -> ");
-        x.append(getDaysLeft());
-
-        return x.toString();
     }
 
 }
