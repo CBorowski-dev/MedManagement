@@ -55,7 +55,7 @@ public class UserDataService {
         UserData userData = getUserData(userName);
         if (!userData.containsDrug(drug)) {
             userData.addDrug(drug);
-//            drugRepository.save(drug);
+            drugRepository.save(drug);
         }
     }
 
@@ -69,22 +69,6 @@ public class UserDataService {
             UserData userData = getUserData(userName);
             Drug drug = userData.getDrug(drugId);
             drugRepository.deleteById(drugId);
-            return userData.removeDrug(drug);
-        }
-        return false;
-    }
-
-    /**
-     *
-     * @param drugName
-     * @param userName
-     * @return
-     */
-    public boolean deleteDrug(String drugName, String userName) {
-        if (drugName != null) {
-            UserData userData = getUserData(userName);
-            Drug drug = userData.getDrug(drugName);
-            drugRepository.deleteById(drug.getId());
             return userData.removeDrug(drug);
         }
         return false;
