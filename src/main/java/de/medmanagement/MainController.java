@@ -2,7 +2,6 @@ package de.medmanagement;
 
 import de.medmanagement.model.*;
 import de.medmanagement.rights.*;
-import org.apache.catalina.filters.RemoteIpFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
