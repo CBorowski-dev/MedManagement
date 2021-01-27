@@ -10,6 +10,7 @@ import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -27,32 +28,34 @@ public class CheckDrugStatusTask implements Tasklet {
     @Autowired
     private EmailServiceImpl emailService;
 
+    @Value( "${perform.job}" )
+    private String performJob;
+
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception
     {
-        System.out.println("--> Task CheckDrugStatus starts");
-
-        ArrayList<Drug> scarceDrugs = new ArrayList<Drug>();
-        List<User> users = usersRepository.findAll();
-        for (User user: users) {
-            if (!(user.isAccountExpired() ||
-                    user.isAccountLocked() ||
-                    user.isCredentialsExpired() ||
-                    user.isDisabled()))
-            {
-                ArrayList<Drug> drugs = userDataService.getDrugs(user.getName());
-                for (Drug drug : drugs) {
-                    if (drug.getDaysLeft() < 14) {
-                        scarceDrugs.add(drug);
+        if ( performJob.equals("true") ) {
+            // System.out.println("--> Task CheckDrugStatus starts");
+            ArrayList<Drug> scarceDrugs = new ArrayList<Drug>();
+            List<User> users = usersRepository.findAll();
+            for (User user : users) {
+                if (!(user.isAccountExpired() ||
+                        user.isAccountLocked() ||
+                        user.isCredentialsExpired() ||
+                        user.isDisabled())) {
+                    ArrayList<Drug> drugs = userDataService.getDrugs(user.getName());
+                    for (Drug drug : drugs) {
+                        if (drug.getDaysLeft() < 14) {
+                            scarceDrugs.add(drug);
+                        }
+                    }
+                    if (!scarceDrugs.isEmpty()) {
+                        informUser(user, scarceDrugs);
                     }
                 }
-                if (!scarceDrugs.isEmpty()) {
-                    informUser(user, scarceDrugs);
-                }
+                scarceDrugs.clear();
             }
-            scarceDrugs.clear();
+            // System.out.println("<-- Task CheckDrugStatus done");
         }
-
-        System.out.println("<-- Task CheckDrugStatus done");
         return RepeatStatus.FINISHED;
     }
 
