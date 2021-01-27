@@ -26,7 +26,7 @@ public class DrugHistoryEntry implements Comparable, Serializable {
 
     public DrugHistoryEntry(int count, Date creationDate, String comment) {
         this.count = count;
-        this.creationDate = Utils.normilizeDate(creationDate);
+        this.creationDate = creationDate;
         this.comment = comment;
     }
 
