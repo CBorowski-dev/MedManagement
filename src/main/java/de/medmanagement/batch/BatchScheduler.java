@@ -29,8 +29,8 @@ public class BatchScheduler {
 
     @Scheduled(cron = "${cron.expression}")
     public void scheduleCheckDrugStatusTask() throws Exception {
+        // System.out.println("Schedule tasks using cron jobs - " + now);
         long now = System.currentTimeMillis() / 1000;
-        System.out.println("Schedule tasks using cron jobs - " + now);
         JobParameters jobParameters = new JobParametersBuilder().addString("time", LocalDateTime.now().toString()).toJobParameters();
         JobExecution execution = jobLauncher.run(checkDrugStatusJob, jobParameters);
     }
