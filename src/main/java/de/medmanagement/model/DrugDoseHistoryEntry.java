@@ -32,6 +32,9 @@ public class DrugDoseHistoryEntry implements Comparable, Serializable {
         this.morningDose = morningDose;
         this.noonDose = noonDose;
         this.eveningDose = eveningDose;
+        // Creation date ist normilized to format yyyy-MM-dd and hour, minute, etc. is set to 0.
+        // This means that drug dose changes are assumed to occur at midnight, regadless when
+        // the user inputs it into the system.
         this.creationDate = Utils.normilizeDate(creationDate);
         this.comment = comment;
     }
