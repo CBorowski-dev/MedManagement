@@ -21,21 +21,11 @@ public class UserData {
 
     // ToDo: Löschen
     public Drug getDrug(String drugName) {
-        for (Drug drug : drugList) {
-            if (drug.getName().equals(drugName)) {
-                return drug;
-            }
-        }
-        return null;
+        return drugList.stream().filter(drug -> drug.getName().equals(drugName)).findFirst().orElse(null);
     }
 
     public Drug getDrug(Integer drugId) {
-        for (Drug drug : drugList) {
-            if (drug.getId().equals(drugId)) {
-                return drug;
-            }
-        }
-        return null;
+        return drugList.stream().filter(drug -> drug.getId().equals(drugId)).findFirst().orElse(null);
     }
 
     public boolean removeDrug(Drug drug) {
