@@ -200,11 +200,7 @@ public class Drug {
      * @return total drug count
      */
     private int getTotalDrugCount() {
-        int count = 0;
-        for (DrugHistoryEntry entry : drugHistoryEntries) {
-            count = count + entry.getCount();
-        }
-        return count;
+        return drugHistoryEntries.stream().mapToInt(entry -> entry.getCount()).sum();
     }
 
     /**
