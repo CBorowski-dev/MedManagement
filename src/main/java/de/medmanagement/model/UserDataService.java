@@ -100,10 +100,7 @@ public class UserDataService {
         UserData userData = getUserData(userName);
         if (userData.getDrugList().size() == 0) {
             // Initial fetch data from database
-            Iterator<Drug> iter = drugRepository.findAllByUserName(userName).iterator();
-            while (iter.hasNext()) {
-                userData.addDrug(iter.next());
-            }
+            drugRepository.findAllByUserName(userName).forEach((Drug d) -> userData.addDrug(d));
         }
         return userData.getDrugList();
     }
@@ -118,8 +115,7 @@ public class UserDataService {
      */
     public boolean changeDrugCount(Integer drugId, int count, String comment, String userName) {
         if (drugId != null) {
-            UserData userData = getUserData(userName);
-            Drug drug = userData.getDrug(drugId);
+            Drug drug = getUserData(userName).getDrug(drugId);
             DrugHistoryEntry entry = new DrugHistoryEntry(count, new Date(), comment);
             drug.addHistoryEntry(entry);
             drugRepository.save(drug);
@@ -135,8 +131,7 @@ public class UserDataService {
      * @return
      */
     public boolean containsDrug(String drugName, String userName) {
-        UserData userData = getUserData(userName);
-        if (userData.getDrug(drugName) != null) {
+        if (getUserData(userName).getDrug(drugName) != null) {
             return true;
         } else {
             return false;
@@ -150,8 +145,7 @@ public class UserDataService {
      */
     public Drug getDrug(Integer drugId, String userName) {
         if (drugId != null) {
-            UserData userData = getUserData(userName);
-            return userData.getDrug(drugId);
+            return getUserData(userName).getDrug(drugId);
         }
         return null;
     }
@@ -184,8 +178,7 @@ public class UserDataService {
      */
     public OrderItem getNewOrderItem(Integer drugId, String userName) {
         if (drugId != null) {
-            UserData userData = getUserData(userName);
-            Drug drug = userData.getDrug(drugId);
+            final Drug drug = getUserData(userName).getDrug(drugId);
             return new OrderItem(drug);
         }
         return null;
@@ -204,8 +197,7 @@ public class UserDataService {
      * @param userName
      */
     public void getClearOrder(String userName) {
-        UserData userData = getUserData(userName);
-        userData.clearOrder();
+        getUserData(userName).clearOrder();
     }
 
     /**
@@ -214,8 +206,7 @@ public class UserDataService {
      * @return
      */
     public Object getOrderItems(String userName) {
-        UserData userData = getUserData(userName);
-        return userData.getOrder().getOrderItems();
+        return getUserData(userName).getOrder().getOrderItems();
     }
 
     /**
@@ -225,8 +216,7 @@ public class UserDataService {
      * @return
      */
     public Object getOrderItems(boolean isOriginalDrug, String userName) {
-        UserData userData = getUserData(userName);
-        return userData.getOrder().getOrderItems(isOriginalDrug);
+        return getUserData(userName).getOrder().getOrderItems(isOriginalDrug);
     }
 
     /**
@@ -235,8 +225,7 @@ public class UserDataService {
      * @param userName Name of the user, for which the order item should be added to the order.
      */
     public void addOrderItem(OrderItem orderItem, String userName) {
-        UserData userData = getUserData(userName);
-        userData.getOrder().addOrderItem(orderItem);
+        getUserData(userName).getOrder().addOrderItem(orderItem);
     }
 
     /**
@@ -245,8 +234,7 @@ public class UserDataService {
      * @param userName Name of the user, for which the order item should be deleted from the order.
      */
     public void deleteOrderItem(Integer drugId, String userName) {
-        UserData userData = getUserData(userName);
-        userData.getOrder().deleteOrderItem(drugId);
+        getUserData(userName).getOrder().deleteOrderItem(drugId);
     }
 
     /**
@@ -257,8 +245,7 @@ public class UserDataService {
      */
     public DrugDTO getDrugData(Integer drugId, String userName) {
         if (drugId != null) {
-            UserData userData = getUserData(userName);
-            Drug drug = userData.getDrug(drugId);
+            Drug drug = getUserData(userName).getDrug(drugId);
             return new DrugDTO(drug);
         }
         return null;
