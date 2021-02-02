@@ -14,14 +14,16 @@
 
 <form action="#" th:action="@{/addToOrder(id=${orderItem.drugId})}" th:object="${orderItem}" method="post">
     <table id="noBorder">
+        <tr style="display:none;">
+            <td id="noBorder"><label>ID</label></td>
+            <td id="noBorder" style="font-weight:bold"><input type="number" th:field="${orderItem.drugId}" readonly/></td>
+        </tr>
         <tr>
             <td id="noBorder"><label>Drug name</label></td>
-            <!--td id="noBorder" style="font-weight:bold"><span th:text="${orderItem.drugName}"/></td-->
             <td id="noBorder" style="font-weight:bold"><input type="text" th:field="${orderItem.drugName}" readonly/></td>
         </tr>
         <tr>
             <td id="noBorder"><label>Current count</label></td>
-            <!--td id="noBorder" style="font-weight:bold"><span th:text="${orderItem.currentDrugCount}"/></td-->
             <td id="noBorder" style="font-weight:bold"><input type="number" th:field="${orderItem.currentDrugCount}" readonly/></td>
         </tr>
         <tr>
