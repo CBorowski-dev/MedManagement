@@ -32,11 +32,11 @@ public class Order {
     public ArrayList<OrderItem> getOrderItems(boolean isOriginalDrug) {
         ArrayList<OrderItem> selectedOrderItems = new ArrayList<OrderItem>();
 
-        for (OrderItem orderItem : orderItemList) {
+        orderItemList.forEach(orderItem -> {
             if (orderItem.isOriginalDrug() == isOriginalDrug) {
                 selectedOrderItems.add(orderItem);
             }
-        }
+        });
 
         return selectedOrderItems;
     }
@@ -50,8 +50,7 @@ public class Order {
         if (drugId != null) {
             for (OrderItem orderItem : orderItemList) {
                 if (orderItem.getDrugId().equals(drugId)) {
-                    orderItemList.remove(orderItem);
-                    return true;
+                    return orderItemList.remove(orderItem);
                 }
             }
         }
