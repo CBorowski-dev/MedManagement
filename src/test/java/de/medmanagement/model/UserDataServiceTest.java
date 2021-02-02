@@ -1,14 +1,13 @@
 package de.medmanagement.model;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class UserDataServiceTest {
@@ -17,14 +16,14 @@ public class UserDataServiceTest {
     DrugDTO drugDataA;
     DrugDTO drugDataB;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         userDataService = new UserDataService();
         drugDataA = new DrugDTO(new Drug("MedA", 250, new Date((new Date()).getTime()-96*60*60*1000), 1,0,1, false, 100, null, "TestUser"));
         drugDataB = new DrugDTO(new Drug("MedB", 62, new Date((new Date()).getTime()-96*60*60*1000), 0.5f,0,0.5f, false, 100,null, "TestUser"));
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         userDataService = null;
         drugDataA = null;
