@@ -1,6 +1,5 @@
 package de.medmanagement.model;
 
-import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.Getter;
 
