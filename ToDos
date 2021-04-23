@@ -4,14 +4,17 @@
 
 2. Benutzern ermöglichen die eigenen Benutzerdaten einzusehen und zu ändern.
 
-3. Benutzern ermöglichen das Passwort zu ändern.
+3. Admin ermöglichen Passwörter von Benutzern zu ändern.
 
-4. Admin ermöglichen Passwörter von Benutzern zu ändern.
+4. Benutzern emöglichen ein vergessenes Passwort über die Login-View zu ändern. Mittels eMail Versand.
 
-5. Benutzern emöglichen ein vergessenes Passwort über die Login-View zu ändern. Mittels eMail Versand.
+5. Adresse pro Nutzer speichern und bei Bestellungen verwenden.
 
-6. Dynamisch generierten Chart der Medikamentenanzahl einbinden:
-   --> https://asbnotebook.com/2020/04/18/google-chart-example-with-spring-boot/
-   --> https://www.roytuts.com/google-chart-using-spring/
-   --> https://www.chartjs.org/
-   [ --> https://canvasjs.com/spring-mvc-charts/ ]
+---------------------------------------------
+SQL für Umstellung auf Drug dose entities:
+
+select CONCAT('insert into drug_dose_history_entities (id, comment, creation_date, evening_dose, morning_dose, noon_dose, drug_id) values (XXX,`Initial dose`,`', dh.creation_date, '`, ',d.evening_dose, ', ',d.morning_dose, ', ',d.noon_dose, ', ',d.id, ');') from drugs d, drug_history_entities dh where dh.drug_id=d.id;
+
+alter table drugs drop column morning_dose;
+alter table drugs drop column evening_dose;
+alter table drugs drop column noon_dose;
