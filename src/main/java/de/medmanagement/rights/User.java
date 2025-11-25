@@ -1,6 +1,7 @@
 package de.medmanagement.rights;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

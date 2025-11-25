@@ -22,16 +22,27 @@ public class BatchScheduler {
     @Autowired
     Job checkDrugStatusJob;
 
+    @Autowired
+    Job checkDrugConsumptionJob;
+
     @Bean
     public TaskScheduler taskScheduler() {
         return new ConcurrentTaskScheduler();
     }
 
-    @Scheduled(cron = "${cron.expression}")
+    @Scheduled(cron = "${cron.expression.check_drug_status}")
     public void scheduleCheckDrugStatusTask() throws Exception {
-        // System.out.println("Schedule tasks using cron jobs - " + now);
-        long now = System.currentTimeMillis() / 1000;
+        System.out.println("--> Schedule tasks using cron job starts");
         JobParameters jobParameters = new JobParametersBuilder().addString("time", LocalDateTime.now().toString()).toJobParameters();
         JobExecution execution = jobLauncher.run(checkDrugStatusJob, jobParameters);
+        System.out.println("<-- Schedule tasks using cron job ends");
+    }
+
+    @Scheduled(cron = "${cron.expression.check_drug_consumption}")
+    public void scheduleCheckDrugConsumptionTask() throws Exception {
+        System.out.println("==> Schedule photo tasks using cron job starts");
+        JobParameters jobParameters = new JobParametersBuilder().addString("time", LocalDateTime.now().toString()).toJobParameters();
+        JobExecution execution = jobLauncher.run(checkDrugConsumptionJob, jobParameters);
+        System.out.println("<== Schedule photo tasks using cron job ends");
     }
 }

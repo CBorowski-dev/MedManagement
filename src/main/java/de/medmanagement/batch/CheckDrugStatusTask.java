@@ -28,13 +28,13 @@ public class CheckDrugStatusTask implements Tasklet {
     @Autowired
     private EmailServiceImpl emailService;
 
-    @Value( "${perform.job}" )
+    @Value( "${perform.job.check_drug_status}" )
     private String performJob;
 
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception
     {
         if ( performJob.equals("true") ) {
-            // System.out.println("--> Task CheckDrugStatus starts");
+            // System.out.println("--> Task CheckDrugStatus execute starts");
             ArrayList<Drug> scarceDrugs = new ArrayList<Drug>();
             List<User> users = usersRepository.findAll();
             for (User user : users) {
@@ -54,7 +54,7 @@ public class CheckDrugStatusTask implements Tasklet {
                 }
                 scarceDrugs.clear();
             }
-            // System.out.println("<-- Task CheckDrugStatus done");
+            // System.out.println("<-- Task CheckDrugStatus execute done");
         }
         return RepeatStatus.FINISHED;
     }

@@ -1,9 +1,7 @@
 package de.medmanagement.model;
 
-import com.sun.istack.NotNull;
-import org.hibernate.annotations.SortNatural;
-
-import javax.persistence.*;
+import jakarta.persistence.*;
+import org.antlr.v4.runtime.misc.NotNull;
 
 import java.time.Duration;
 import java.util.*;
@@ -32,13 +30,13 @@ public class Drug {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "drug_id")
-    @SortNatural
+    // @SortNatural
     @OrderBy("creationDate DESC")
     private List<DrugHistoryEntry> drugHistoryEntries = new ArrayList<DrugHistoryEntry>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "drug_id")
-    @SortNatural
+    // @SortNatural
     @OrderBy("creationDate DESC")
     private List<DrugDoseHistoryEntry> drugDoseHistoryEntries = new ArrayList<DrugDoseHistoryEntry>();
 
