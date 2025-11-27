@@ -1,0 +1,40 @@
+services:
+  db:
+    image: mariadb:latest
+    container_name: medmanagement-db
+    environment:
+      MARIADB_DATABASE: medmanagementdb_dev
+      MARIADB_USER: ${MARIADB_USER}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+    #volumes:
+    #  - './mariadb_data:/var/lib/mysql'
+    #  - './mariadb_logs:/var/log/mysql'
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  #adminer:
+  #  image: adminer
+  #  restart: always
+  #  ports:
+  #    - 8090:8090
+
+  web:
+    image: springboot/medmanagementapp:V0.0.6
+    container_name: medmanagement-app
+    build: .
+    environment:
+      #spring.datasource.url: "jdbc:mysql://medmanagement-db:3306/medmanagementdb_dev?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true"
+      DB_UPSTREAM: http://${DOCKER_GATEWAY_HOST:-host.docker.internal}:3306
+      WAIT_FOR: db:3306
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy

@@ -1,6 +1,8 @@
 HELP.md
 .gradle
 build/
+docker/.env
+database/medmanagementdb_25112025.sql
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
 !**/src/test/**

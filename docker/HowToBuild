@@ -1,0 +1,31 @@
+In root directory of the project:
+
+- Build the jar file with command on cli: gradle build -x test
+- Check, if the given JRE string in the Dockerfile is the correct one. If not, update the JRE string.
+- Copy Dockerfile to root directory.
+- Execute command on cli:
+    sudo docker build -t springboot/medmanagementapp:V0.0.6 .
+    # sudo docker build --build-arg JAR_FILE=build/libs/\*.jar -t springboot/medmanagementapp:V0.0.6 .
+- Check, whether image was build with: sudo docker image list
+
+
+-----------
+sudo docker exec -it medmanagement-db bash
+mariadb -u root -p"<Password>"
+
+
+-----------
+mysql> CREATE USER 'root'@'%' IDENTIFIED BY '<PASSWORD>';
+mysql> GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+mysql> FLUSH PRIVILEGES;
+
+
+------------
+Backup (from Prod)
+sudo docker exec medmanagement_db mariadb-dump -u <user> -p"<Password>" medmanagementdb > ./medmanagementdb_XYZ.sql
+
+Restore (to Dev)
+// Copy backup file into the container
+sudo docker cp ./medmanagementdb_XYZ.sql medmanagement-db:/medmanagementdb_XYZ.sql
+// Read data into database
+sudo docker exec medmanagement-db bash -c 'mariadb -u root -p"<password>" medmanagementdb_dev < ./medmanagementdb_XYZ.sql'

@@ -56,7 +56,7 @@ public class WebSecurityConfig {
                         formLogin.loginPage("/login").permitAll())
                 //.and()
                 .logout(logout ->
-                        logout.logoutUrl("/signout")
+                        logout.logoutUrl("/logout")
                                 .logoutSuccessHandler(logoutSuccessHandler())
                                 .invalidateHttpSession(true)
                                 .deleteCookies("JSESSIONID")
