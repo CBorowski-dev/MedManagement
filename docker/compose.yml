@@ -7,8 +7,8 @@ services:
       MARIADB_USER: ${MARIADB_USER}
       MARIADB_PASSWORD: ${MARIADB_PASSWORD}
       MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
-    #volumes:
-    #  - './mariadb_data:/var/lib/mysql'
+    volumes:
+      - '/var/lib/docker/volumes/3c2c631afd2215aca588fc655c0e6bb1deb70dc68d563dedc669785fdff44f13/_data:/var/lib/mysql'
     #  - './mariadb_logs:/var/log/mysql'
     ports:
       - "3306:3306"

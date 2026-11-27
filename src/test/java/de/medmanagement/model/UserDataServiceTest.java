@@ -34,8 +34,8 @@ public class UserDataServiceTest {
     public void addDrug() {
         userDataService.createDrug(drugDataA, "cbo");
 
-        assertTrue(userDataService.containsDrug(drugDataA.getName(), "cbo"));
-        assertFalse(userDataService.containsDrug(drugDataB.getName(), "cbo"));
+        assertTrue(userDataService.containsDrug(drugDataA.name, "cbo"));
+        assertFalse(userDataService.containsDrug(drugDataB.name, "cbo"));
     }
 
     @Test
@@ -43,13 +43,13 @@ public class UserDataServiceTest {
         userDataService.createDrug(drugDataA, "cbo");
         userDataService.createDrug(drugDataB, "cbo");
 
-        assertTrue(userDataService.containsDrug(drugDataA.getName(), "cbo"));
-        assertTrue(userDataService.containsDrug(drugDataB.getName(), "cbo"));
+        assertTrue(userDataService.containsDrug(drugDataA.name, "cbo"));
+        assertTrue(userDataService.containsDrug(drugDataB.name, "cbo"));
 
 //        userDataService.deleteDrug(drugDataA.getName(), "cbo");
 
 //        assertFalse(userDataService.containsDrug(drugDataA.getName(), "cbo"));
-        assertTrue(userDataService.containsDrug(drugDataB.getName(), "cbo"));
+        assertTrue(userDataService.containsDrug(drugDataB.name, "cbo"));
     }
 
     @Test
@@ -57,13 +57,13 @@ public class UserDataServiceTest {
         userDataService.createDrug(drugDataA, "cbo");
         userDataService.createDrug(drugDataB, "cbo");
 
-        assertTrue(userDataService.containsDrug(drugDataA.getName(), "cbo"));
-        assertTrue(userDataService.containsDrug(drugDataB.getName(), "cbo"));
+        assertTrue(userDataService.containsDrug(drugDataA.name, "cbo"));
+        assertTrue(userDataService.containsDrug(drugDataB.name, "cbo"));
 
 //        userDataService.deleteDrug(drugDataA.getName(), "userA");
 
 //        assertFalse(userDataService.containsDrug(drugDataA.getName(), "cbo"));
-        assertTrue(userDataService.containsDrug(drugDataB.getName(), "cbo"));
+        assertTrue(userDataService.containsDrug(drugDataB.name, "cbo"));
     }
 
     /*

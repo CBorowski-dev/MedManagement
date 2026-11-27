@@ -8,8 +8,6 @@
 
 4. Benutzern emöglichen ein vergessenes Passwort über die Login-View zu ändern. Mittels eMail Versand.
 
-5. Adresse pro Nutzer speichern und bei Bestellungen verwenden.
-
 ---------------------------------------------
 SQL für Umstellung auf Drug dose entities:
 
